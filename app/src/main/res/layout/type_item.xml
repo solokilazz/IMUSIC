@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="5dp"
+    android:layout_marginEnd="10dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/background_cardview">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivStyle"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/gocuatraitim"
+            app:shapeAppearanceOverlay="@style/circular"/>
+
+        <TextView
+            android:id="@+id/txtNameType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name Type"
+            android:textSize="20dp"
+
+            android:layout_gravity="center"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

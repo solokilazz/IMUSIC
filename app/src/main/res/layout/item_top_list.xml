@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutToplist"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/tvTopListIndex"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:ems="1"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#E53935"
+            android:text="1" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivImageSong"
+            android:layout_toRightOf="@id/tvTopListIndex"
+            android:layout_marginLeft="10dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/gocuatraitim"
+            app:shapeAppearanceOverlay="@style/circular"/>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_toRightOf="@id/ivImageSong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvTopListNameSong"
+                android:maxLines="1"
+                android:maxWidth="250dp"
+                android:ellipsize="end"
+                android:textSize="20sp"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="Ten Bai Hat" />
+            <TextView
+                android:id="@+id/tvTopListNameSinger"
+                android:layout_below="@id/tvTopListNameSong"
+                android:maxLines="1"
+                android:maxWidth="250dp"
+                android:ellipsize="end"
+                android:textSize="17sp"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="Ten ca si" />
+
+        </RelativeLayout>
+
+
+
+
+    </RelativeLayout>
+</RelativeLayout>

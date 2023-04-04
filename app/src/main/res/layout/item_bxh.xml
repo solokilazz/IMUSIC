@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/main"
+    android:padding="20dp"
+    android:layout_margin="5dp"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/stt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_marginTop="12dp"
+            android:text="1"
+            android:textSize="100sp"/>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/anh"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_width="150dp"
+            android:layout_toEndOf="@+id/stt"
+            app:shapeAppearanceOverlay="@style/circular"
+            android:layout_height="150dp"
+            android:src="@drawable/am_iu"
+            />
+
+        <TextView
+            android:id="@+id/tenbaihat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/anh"
+            android:layout_marginTop="25dp"
+            android:textColor="@color/white"
+            android:layout_marginLeft="50dp"
+            android:textSize="50sp"
+            android:text="Tên Bài Hát"/>
+
+        <TextView
+            android:id="@+id/tencasi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginBottom="35dp"
+            android:layout_toEndOf="@+id/anh"
+            android:text="Ca Sĩ"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
