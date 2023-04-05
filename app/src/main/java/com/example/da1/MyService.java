@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -40,11 +41,12 @@ public class MyService extends Service {
     private TimeSongViewModel timeSongViewModel;
     private ArrayList<Song> listSong = new ArrayList<>();
     private int position = 0;
-    private boolean isPlaying = false;
     private boolean shuffle = false;
     private boolean repeat = false;
     private boolean next = false;
+    private int temp=0;
 
+    public static boolean isPlaying = false;
     public static final int ACTION_PAUSE = 1;
     public static final int ACTION_RESUME = 2;
     public static final int ACTION_NEXT = 3;
@@ -56,7 +58,7 @@ public class MyService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
+//        Toast.makeText(this,"serviceOnCreate",Toast.LENGTH_LONG).show();
     }
 
     @Nullable
@@ -68,10 +70,12 @@ public class MyService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Bundle bundle = intent.getBundleExtra("bundle");
-        if (bundle!=null && listSong.size()==0){
+        if (bundle!=null && temp==0){
             listSong = (ArrayList<Song>) bundle.getSerializable("list_song");
             position = (int) bundle.getSerializable("position");
+//            Toast.makeText(this,"runserviceOnService",Toast.LENGTH_LONG).show();
             startMusic();
+            temp++;
         }
 
         int action =  intent.getIntExtra("action_music_service",0);
@@ -91,6 +95,7 @@ public class MyService extends Service {
         mediaPlayer.seekTo(time);
 
     }
+
 
 
 
@@ -330,6 +335,7 @@ public class MyService extends Service {
             mediaPlayer.release();
             mediaPlayer = null;
         }
+//        Toast.makeText(this,"serviceDestroy",Toast.LENGTH_LONG).show();
     }
 
     class playMusic extends AsyncTask<Integer,Void,Integer> {

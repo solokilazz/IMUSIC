@@ -23,10 +23,6 @@ import java.util.ArrayList;
 
 public class AllFragment extends Fragment {
 
-    RecyclerView listSongAll;
-    SongsAdapter songsAdapter;
-    SongsDAO songsDAO;
-    ArrayList<Song> list = new ArrayList<>();
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -72,19 +68,7 @@ public class AllFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        listSongAll = view.findViewById(R.id.listSongAll);
-        songsDAO = new SongsDAO(getContext());
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        listSongAll.setLayoutManager(linearLayoutManager);
-
-        fillList();
 
     }
 
-    public void fillList(){
-        list = songsDAO.getAll();
-        songsAdapter = new SongsAdapter(getContext(),list);
-        listSongAll.setAdapter(songsAdapter);
-    }
 }

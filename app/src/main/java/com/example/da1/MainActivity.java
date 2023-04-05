@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Intent intent = new Intent(MainActivity.this,MyService.class);
-        stopService(intent);
+//        Intent intent = new Intent(MainActivity.this,MyService.class);
+//        stopService(intent);
     }
 }

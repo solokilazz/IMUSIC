@@ -94,6 +94,7 @@ public class PlayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+//        Toast.makeText(this,"onCreate",Toast.LENGTH_LONG).show();
 
         //Anh xa
         toolbar = findViewById(R.id.toolbar );
@@ -135,6 +136,7 @@ public class PlayActivity extends AppCompatActivity {
         //Service
         runService();
 
+
         //start music
         startMusic();
 
@@ -150,6 +152,7 @@ public class PlayActivity extends AppCompatActivity {
 
 
     private void runService() {
+//        Toast.makeText(this,"runservice",Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this,MyService.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("list_song",listSong);
@@ -367,10 +370,9 @@ public class PlayActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PlayActivity.this, MainActivity.class);
+                Intent intent = new Intent(PlayActivity.this,MainActivity.class);
                 startActivity(intent);
-//                listSong.clear();
-//                finish();
+//                onBackPressed();
             }
         });
         toolbar.setTitleTextColor(Color.WHITE);
@@ -394,10 +396,17 @@ public class PlayActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+//        Toast.makeText(this,"onPause",Toast.LENGTH_LONG).show();
+
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+//        Toast.makeText(this,"onDestroy",Toast.LENGTH_LONG).show();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
     }
 
