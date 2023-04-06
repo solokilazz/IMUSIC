@@ -2,6 +2,8 @@
 <resources>
     <color name="main">#170f23</color>
     <color name="main2">#780c94</color>
+    <color name="bg3">#AF2571</color>
+    <color name="bg2">#20A183</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>

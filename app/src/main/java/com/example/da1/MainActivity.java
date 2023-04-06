@@ -8,15 +8,15 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.da1.DAO.SingersDAO;
 import com.example.da1.DAO.SongsDAO;
 import com.example.da1.DAO.StylesDAO;
-import com.example.da1.Fragments.AllFragment;
+import com.example.da1.Fragments.AccountFragment;
 import com.example.da1.Fragments.HomeFragment;
 import com.example.da1.Fragments.TopFragment;
 import com.example.da1.Models.Singer;
@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     SongsDAO songsDAO;
     SingersDAO singersDAO;
     StylesDAO stylesDAO;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
         // gắn toolbar
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+        toolbar.setNavigationIcon(R.drawable.icon_user);
+//        toolbar.getBackground().setAlpha(0);
 
         //gán hiển thị mặc định ban đầu
         replaceFragment(new HomeFragment());
@@ -64,18 +68,27 @@ public class MainActivity extends AppCompatActivity {
                 switch (id) {
                     case R.id.home:
                         replaceFragment(new HomeFragment());
+                        toolbar.setBackground(getDrawable(R.drawable.toolbar_bg));
                         break;
                     case R.id.top:
                         replaceFragment(new TopFragment());
+                        toolbar.setBackground(getDrawable(R.drawable.toolbar_bg2));
                         break;
                     case R.id.about:
-                        replaceFragment(new AllFragment());
+                        replaceFragment(new AccountFragment());
+                        toolbar.setBackground(getDrawable(R.drawable.toolbar_bg3));
                         break;
                 }
                 return false;
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_option_main,menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
 

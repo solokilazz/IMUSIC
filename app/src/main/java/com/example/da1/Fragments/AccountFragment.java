@@ -1,6 +1,8 @@
 package com.example.da1.Fragments;
 
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,20 +10,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.da1.Adapter.SongsAdapter;
-import com.example.da1.DAO.ISongs;
-import com.example.da1.DAO.SongsDAO;
-import com.example.da1.MainActivity;
-import com.example.da1.Models.Song;
 import com.example.da1.R;
 
-import java.util.ArrayList;
-
-public class AllFragment extends Fragment {
+public class AccountFragment extends Fragment {
 
 
     private static final String ARG_PARAM1 = "param1";
@@ -31,14 +25,14 @@ public class AllFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public AllFragment() {
+    public AccountFragment() {
         // Required empty public constructor
     }
 
 
     // method này là thể hiện của lớp, dùng để gọi trực tiếp mà ko cần tạo mới đối tượng.
-    public static AllFragment newInstance(String param1, String param2){
-        AllFragment fragment = new AllFragment();
+    public static AccountFragment newInstance(String param1, String param2){
+        AccountFragment fragment = new AccountFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,7 +53,7 @@ public class AllFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.all_fragment,container,false);
+        View view = inflater.inflate(R.layout.account_fragment,container,false);
         return view;
     }
 
@@ -70,5 +64,6 @@ public class AllFragment extends Fragment {
 
 
     }
+
 
 }

@@ -11,7 +11,7 @@
         android:id="@+id/toolbar"
         android:gravity="center"
         app:titleTextColor="@color/white"
-        android:background="#170f23"
+        android:background="@drawable/toolbar_bg"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"/>
 
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:layout_gravity="bottom"
-            android:background="#170f23"
+            android:background="@color/main"
             app:itemIconTint="@drawable/selector_bottom_nav_view"
             app:itemTextColor="@drawable/selector_bottom_nav_view"
             app:itemRippleColor="#780c94"
