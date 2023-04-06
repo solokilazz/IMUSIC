@@ -2,16 +2,18 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/register"
-        android:title="Đăng kí"
-        android:icon="@drawable/add"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/search_bar"
+        android:title="Search"
+        android:icon="@drawable/ic_search_24"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        />
     <item
         android:id="@+id/login"
         android:title="Đăng nhập"
         app:showAsAction="never" />
     <item
         android:id="@+id/logout"
-        android:title="Đăng xuất"
+        android:title="Đăng ký"
         app:showAsAction="never" />
 </menu>

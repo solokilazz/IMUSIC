@@ -21,7 +21,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             app:riv_corner_radius="40dp"
-            android:src="@drawable/btn_music"/>
+            android:src="@drawable/icon_user"/>
 
         <TextView
             android:id="@+id/txtUserName"
@@ -37,8 +37,8 @@
         android:layout_width="wrap_content"
         android:layout_height="150dp"
         app:cardBackgroundColor="#343b4d"
+        android:visibility="gone"
         android:layout_margin="10dp"
-
         app:cardCornerRadius="10dp">
 
         <LinearLayout
@@ -132,14 +132,14 @@
             android:layout_height="wrap_content"
             />
 
-        <TextView
-            android:id="@+id/txtLogout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=" Đăng xuất tài khoản"
-            android:textColor="@color/white"
-            android:textSize="20dp"
-            android:drawableStart="@drawable/clock"/>
+<!--        <TextView-->
+<!--            android:id="@+id/txtLogout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text=" Đăng xuất tài khoản"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="20dp"-->
+<!--            android:drawableStart="@drawable/clock"/>-->
     </LinearLayout>
 
 </LinearLayout>

@@ -3,21 +3,27 @@ package com.example.da1;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.splashscreen.SplashScreen;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.da1.DAO.SingersDAO;
 import com.example.da1.DAO.SongsDAO;
 import com.example.da1.DAO.StylesDAO;
 import com.example.da1.Fragments.AccountFragment;
 import com.example.da1.Fragments.HomeFragment;
+import com.example.da1.Fragments.LoginFragment;
+import com.example.da1.Fragments.RegisterFragment;
 import com.example.da1.Fragments.TopFragment;
 import com.example.da1.Models.Singer;
 import com.example.da1.Models.Song;
@@ -27,16 +33,26 @@ import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
 
-    Toolbar toolbar;
-    BottomNavigationView bottomNavigationView;
-    SongsDAO songsDAO;
-    SingersDAO singersDAO;
-    StylesDAO stylesDAO;
+    public static Toolbar toolbar;
+    private BottomNavigationView bottomNavigationView;
+    private SongsDAO songsDAO;
+    private SingersDAO singersDAO;
+    private StylesDAO stylesDAO;
 
+    public static void replaceToolbarColor(Drawable color){
+        toolbar.setBackground(color);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //set màn hình chờ
+        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         setContentView(R.layout.activity_main);
 
         toolbar = findViewById(R.id.toolbar);
@@ -52,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         // gắn toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
-        toolbar.setNavigationIcon(R.drawable.icon_user);
+        toolbar.setNavigationIcon(R.drawable.ic_outline_account_circle_24);
 //        toolbar.getBackground().setAlpha(0);
 
         //gán hiển thị mặc định ban đầu
@@ -68,15 +84,12 @@ public class MainActivity extends AppCompatActivity {
                 switch (id) {
                     case R.id.home:
                         replaceFragment(new HomeFragment());
-                        toolbar.setBackground(getDrawable(R.drawable.toolbar_bg));
                         break;
                     case R.id.top:
                         replaceFragment(new TopFragment());
-                        toolbar.setBackground(getDrawable(R.drawable.toolbar_bg2));
                         break;
                     case R.id.about:
                         replaceFragment(new AccountFragment());
-                        toolbar.setBackground(getDrawable(R.drawable.toolbar_bg3));
                         break;
                 }
                 return false;
@@ -88,16 +101,42 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_option_main,menu);
+
+        MenuItem menuItem = menu.findItem(R.id.search_bar);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setBackgroundColor(getColor(R.color.textSearch));
+        searchView.setQueryHint("Type here to search");
         return super.onCreateOptionsMenu(menu);
     }
 
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.login:
+                this.getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fragment_container,new LoginFragment()).
+                        addToBackStack(null).commit();
+                break;
+            case R.id.logout:
+                this.getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fragment_container,new RegisterFragment()).
+                        addToBackStack(null).commit();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     public void replaceFragment(Fragment fragment){
         FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                 .beginTransaction().replace(R.id.fragment_container,fragment);
         fragmentTransaction.commit();
     }
+
+
 
     public void addData(){
         singersDAO = new SingersDAO(MainActivity.this);

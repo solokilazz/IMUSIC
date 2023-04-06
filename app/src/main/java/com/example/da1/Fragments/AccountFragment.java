@@ -3,16 +3,22 @@ package com.example.da1.Fragments;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.example.da1.MainActivity;
 import com.example.da1.R;
 
 public class AccountFragment extends Fragment {
@@ -54,6 +60,8 @@ public class AccountFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.account_fragment,container,false);
+        MainActivity.replaceToolbarColor(getResources().getDrawable(R.drawable.toolbar_bg3));
+//        Toast.makeText(getActivity(),"day la onCreateView",Toast.LENGTH_LONG).show();
         return view;
     }
 
@@ -61,9 +69,6 @@ public class AccountFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
     }
-
 
 }

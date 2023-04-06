@@ -18,6 +18,7 @@ import com.example.da1.Adapter.StylesAdapter;
 import com.example.da1.DAO.SingersDAO;
 import com.example.da1.DAO.SongsDAO;
 import com.example.da1.DAO.StylesDAO;
+import com.example.da1.MainActivity;
 import com.example.da1.Models.Singer;
 import com.example.da1.Models.Song;
 import com.example.da1.Models.Style;
@@ -78,6 +79,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.home_fragment,container,false);
+        MainActivity.replaceToolbarColor(getResources().getDrawable(R.drawable.toolbar_bg));
         return view;
     }
 

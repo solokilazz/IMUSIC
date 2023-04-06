@@ -9,23 +9,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.da1.Activities.PlayActivity;
-import com.example.da1.Adapter.PlayListAdapter;
-import com.example.da1.Adapter.TopListAdapter;
-import com.example.da1.DAO.SongsDAO;
-import com.example.da1.ItemViewModel;
 import com.example.da1.MainActivity;
 import com.example.da1.R;
 
-public class TopFragment extends Fragment {
+public class RegisterFragment extends Fragment {
 
-    RecyclerView recyclerViewTopList;
-    TopListAdapter topListAdapter;
-    SongsDAO songsDAO;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -34,14 +23,14 @@ public class TopFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public TopFragment() {
+    public RegisterFragment() {
         // Required empty public constructor
     }
 
 
     // method này là thể hiện của lớp, dùng để gọi trực tiếp mà ko cần tạo mới đối tượng.
-    public static TopFragment newInstance(String param1, String param2){
-        TopFragment fragment = new TopFragment();
+    public static RegisterFragment newInstance(String param1, String param2){
+        RegisterFragment fragment = new RegisterFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -62,8 +51,8 @@ public class TopFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.top_fragment,container,false);
-        MainActivity.replaceToolbarColor(getResources().getDrawable(R.drawable.toolbar_bg2));
+        View view = inflater.inflate(R.layout.register_fragment,container,false);
+        MainActivity.replaceToolbarColor(getResources().getDrawable(com.google.android.material.R.color.material_dynamic_tertiary20));
         return view;
     }
 
@@ -71,17 +60,7 @@ public class TopFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerViewTopList = view.findViewById(R.id.rvTopList);
-        songsDAO = new SongsDAO(getContext());
-        fillList();
-    }
 
-    public void fillList(){
-        if (songsDAO.getAll().size()>0){
-            topListAdapter = new TopListAdapter(getContext(), songsDAO.getAll());
-            recyclerViewTopList.setLayoutManager(new LinearLayoutManager(getContext()));
-            recyclerViewTopList.setAdapter(topListAdapter);
-        }
     }
 
 }
