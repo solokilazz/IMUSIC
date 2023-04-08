@@ -46,13 +46,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //set màn hình chờ
-        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
-        try {
-            Thread.sleep(1500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         setContentView(R.layout.activity_main);
 
         toolbar = findViewById(R.id.toolbar);
