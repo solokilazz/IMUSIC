@@ -2,6 +2,7 @@ package com.example.da1.Fragments;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,36 +12,64 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.da1.Adapter.SingerAdapter;
+import com.example.da1.Adapter.SlideAdapter;
 import com.example.da1.Adapter.SongsAdapter;
 import com.example.da1.Adapter.StylesAdapter;
+import com.example.da1.DAO.CommercialsDAO;
 import com.example.da1.DAO.SingersDAO;
 import com.example.da1.DAO.SongsDAO;
 import com.example.da1.DAO.StylesDAO;
 import com.example.da1.MainActivity;
+import com.example.da1.Models.Commercial;
 import com.example.da1.Models.Singer;
 import com.example.da1.Models.Song;
 import com.example.da1.Models.Style;
 import com.example.da1.R;
+import com.example.da1.ZoomOutPageTransformer;
 
 import java.util.ArrayList;
+
+import me.relex.circleindicator.CircleIndicator3;
 
 public class HomeFragment extends Fragment {
 
     private RecyclerView recycleType, recyclerItem, recyclerSinger;
+    private ViewPager2 vpSlide;
+    private CircleIndicator3 circleIndicator3;
 
     private StylesAdapter stylesAdapter;
     private SongsAdapter songsAdapter;
     private SingerAdapter singerAdapter;
+    private SlideAdapter slideAdapter;
 
     SongsDAO songsDAO;
     SingersDAO singersDAO;
     StylesDAO stylesDAO;
+    CommercialsDAO commercialsDAO;
 
     ArrayList<Song> listSongRandoms = new ArrayList<>();
     ArrayList<Singer> listSingers = new ArrayList<>();
     ArrayList<Style> listStyles = new ArrayList<>();
+    ArrayList<Commercial> listComercial = new ArrayList<>();
+
+
+    //transfer while run time
+    private Handler handler = new Handler();
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (vpSlide.getCurrentItem() == listComercial.size()-1){
+                vpSlide.setCurrentItem(0);
+            }
+            else {
+                vpSlide.setCurrentItem(vpSlide.getCurrentItem()+1);
+            }
+        }
+    };
+
 
 
     private static final String ARG_PARAM1 = "param1";
@@ -92,9 +121,14 @@ public class HomeFragment extends Fragment {
         recyclerItem = view.findViewById(R.id.recycleChart);
         recyclerSinger = view.findViewById(R.id.recyclerSinger);
 
+        //slide comercial
+        vpSlide = view.findViewById(R.id.vpSlide);
+        circleIndicator3 = view.findViewById(R.id.circleIndi);
+
         songsDAO = new SongsDAO(getContext());
         singersDAO = new SingersDAO(getContext());
         stylesDAO = new StylesDAO(getContext());
+        commercialsDAO = new CommercialsDAO(getContext());
 
         LinearLayoutManager layoutManagerSongs = new LinearLayoutManager(getContext(),
                 RecyclerView.VERTICAL, false);
@@ -107,6 +141,10 @@ public class HomeFragment extends Fragment {
         recycleType.setLayoutManager(layoutManagerStyles);
 
         fillList();
+
+        //transfer slide comercial
+        transferSile();
+
     }
 
     public void fillList(){
@@ -124,6 +162,31 @@ public class HomeFragment extends Fragment {
         stylesAdapter = new StylesAdapter(getContext(),listStyles);
         recycleType.setAdapter(stylesAdapter);
         recycleType.setHasFixedSize(true);
+
+        //comercial
+        listComercial = commercialsDAO.getAll();
+        slideAdapter = new SlideAdapter(getContext(),listComercial);
+        vpSlide.setAdapter(slideAdapter);
+        circleIndicator3.setViewPager(vpSlide);
     }
 
+    public void transferSile(){
+        vpSlide.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                handler.removeCallbacks(runnable);
+                //set time 3s chuyen
+                handler.postDelayed(runnable, 3000);
+            }
+        });
+        // hieu ung zoomout slide
+        vpSlide.setPageTransformer(new ZoomOutPageTransformer());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        handler.removeCallbacks(runnable);
+    }
 }

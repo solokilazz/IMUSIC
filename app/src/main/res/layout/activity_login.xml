@@ -60,6 +60,7 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/btnLogin"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="70dp"
@@ -80,11 +81,11 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_margin="10dp"
-        android:background="@drawable/btn_login"
+        android:backgroundTint="@color/bg2"
         android:drawableLeft="@drawable/ic_baseline_account_box_24"
         android:drawablePadding="10dp"
-        android:textSize="20sp"
-        android:text="Đăng nhap gg"/>
+        android:text="Đăng nhap gg"
+        android:textSize="20sp" />
 
 
 </LinearLayout>

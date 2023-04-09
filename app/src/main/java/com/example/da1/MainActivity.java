@@ -10,13 +10,22 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.da1.Activities.LoginActivity;
+import com.example.da1.DAO.CommercialsDAO;
 import com.example.da1.DAO.SingersDAO;
 import com.example.da1.DAO.SongsDAO;
 import com.example.da1.DAO.StylesDAO;
@@ -25,11 +34,21 @@ import com.example.da1.Fragments.HomeFragment;
 import com.example.da1.Fragments.LoginFragment;
 import com.example.da1.Fragments.RegisterFragment;
 import com.example.da1.Fragments.TopFragment;
+import com.example.da1.Models.Commercial;
 import com.example.da1.Models.Singer;
 import com.example.da1.Models.Song;
 import com.example.da1.Models.Style;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
     private SongsDAO songsDAO;
     private SingersDAO singersDAO;
     private StylesDAO stylesDAO;
+    private CommercialsDAO commercialsDAO;
+    private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
 
     public static void replaceToolbarColor(Drawable color){
         toolbar.setBackground(color);
@@ -51,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+
 
         //addData
         songsDAO = new SongsDAO(MainActivity.this);
@@ -61,8 +86,13 @@ public class MainActivity extends AppCompatActivity {
         // gắn toolbar
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
-        toolbar.setNavigationIcon(R.drawable.ic_outline_account_circle_24);
-//        toolbar.getBackground().setAlpha(0);
+
+        if (mUser!=null){
+            new LoadImageInternet(this,toolbar).execute(String.valueOf(mUser.getPhotoUrl()));
+        }else {
+            toolbar.setNavigationIcon(R.drawable.ic_outline_account_circle_24);
+        }
+
 
         //gán hiển thị mặc định ban đầu
         replaceFragment(new HomeFragment());
@@ -107,15 +137,14 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()){
-            case R.id.login:
-                this.getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fragment_container,new LoginFragment()).
-                        addToBackStack(null).commit();
-                break;
             case R.id.logout:
-                this.getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fragment_container,new RegisterFragment()).
-                        addToBackStack(null).commit();
+//                this.getSupportFragmentManager().beginTransaction().
+//                        replace(R.id.fragment_container,new RegisterFragment()).
+//                        addToBackStack(null).commit();
+                mAuth.signOut();
+                Intent intentLogin = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intentLogin);
+                finish();
                 break;
             default:
                 break;
@@ -168,11 +197,31 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i<nameStyle.length;i++){
             stylesDAO.insert(new Style(nameStyle[i],imageStyle[i]));
         }
+
+        commercialsDAO = new CommercialsDAO(MainActivity.this);
+        String[] mTitle = new String[]{"Album: Ấm Iu"
+                ,"là một câu chuyện tình yêu thú vị mà Phan Mạnh Quỳnh muốn dành cho khán giả nghe " +
+                "nhạc trong lần tái hiện sau thời gian dài"
+                ,"Là ca khúc đánh dấu sự thành công trong sự nghiệp của Sơn Tùng MTP"
+                , "là một ca khúc nhạc trẻ do nhạc sĩ Nguyễn Minh Cường sáng tác và được trình diễn bởi Hoài Lâm"
+                ,"Trong sự nghiệp sáng tác đồ sộ với hàng trăm ca khúc mà nhạc sĩ Vinh Sử để lại dấu " +
+                "ấn mạnh trong lòng người mộ điệu thì Gõ cửa trái tim có lẽ là ..."};
+        int[] imageComer = new int[]{R.drawable.am_iu,R.drawable.yeu_nhau_nua_ngay
+                , R.drawable.em_cua_ngay_hom_qua,R.drawable.hoa_no_khong_mau,R.drawable.gocuatraitim};
+        String[] mSongId = new String[]{"1","10","7",
+                "9", "2"};
+
+        for (int i = 0; i<mSongId.length;i++){
+            commercialsDAO.insert(new Commercial(mTitle[i],imageComer[i],mSongId[i]));
+        }
     }
+
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+//        Toast.makeText(this,"Main destroy",Toast.LENGTH_LONG).show();
 //        Intent intent = new Intent(MainActivity.this,MyService.class);
 //        stopService(intent);
     }

@@ -9,6 +9,13 @@ public class Commercial {
     public Commercial() {
     }
 
+    public Commercial(int id, String title, int image, String songId) {
+        this.id = id;
+        this.title = title;
+        this.image = image;
+        this.songId = songId;
+    }
+
     public Commercial(String title, int image, String songId) {
         this.title = title;
         this.image = image;

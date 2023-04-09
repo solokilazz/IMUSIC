@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     private SignInClient oneTapClient;
     private BeginSignInRequest signInRequest;
 
-    Button btnLoginGG;
+    Button btnLoginGG, btnLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +65,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void eventClick() {
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainActivity = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(mainActivity);
+                finish();
+            }
+        });
         btnLoginGG.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,6 +146,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void mapping() {
         btnLoginGG = findViewById(R.id.btnLoginGG);
+        btnLogin = findViewById(R.id.btnLogin);
 
         mAuth = FirebaseAuth.getInstance();
         oneTapClient = Identity.getSignInClient(this);

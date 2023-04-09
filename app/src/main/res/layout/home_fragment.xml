@@ -16,34 +16,27 @@
             android:orientation="vertical">
 
 
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:orientation="horizontal">-->
 
-<!--                <com.makeramen.roundedimageview.RoundedImageView-->
-<!--                    android:id="@+id/imageView"-->
-<!--                    android:layout_width="50dp"-->
-<!--                    android:layout_height="50dp"-->
+            <RelativeLayout
+                android:id="@+id/rlComercial"
+                android:padding="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="350dp">
 
-<!--                    app:riv_corner_radius="40dp"-->
-<!--                    android:src="@drawable/btn_music"/>-->
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/vpSlide"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"/>
 
-<!--                <EditText-->
-<!--                    android:id="@+id/editTextTextPersonName"-->
-<!--                    android:layout_width="300dp"-->
-<!--                    android:layout_height="50dp"-->
-<!--                    android:layout_marginStart="20dp"-->
-<!--                    android:background="@drawable/search_background"-->
-<!--                    android:drawableStart="?android:attr/actionModeWebSearchDrawable"-->
-<!--                    android:ems="10"-->
-<!--                    android:hint="Find"-->
-<!--                    android:inputType="textPersonName"-->
-<!--                    android:paddingStart="0dp"-->
-<!--                    />-->
-
-<!--            </LinearLayout>-->
-
+                <me.relex.circleindicator.CircleIndicator3
+                    android:id="@+id/circleIndi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_alignBottom="@+id/vpSlide"
+                    android:layout_centerHorizontal="true"
+                    app:ci_drawable="@drawable/background_image" />
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

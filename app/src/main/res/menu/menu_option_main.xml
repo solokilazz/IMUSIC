@@ -6,14 +6,9 @@
         android:title="Search"
         android:icon="@drawable/ic_search_24"
         app:showAsAction="ifRoom|collapseActionView"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        />
-    <item
-        android:id="@+id/login"
-        android:title="Đăng nhập"
-        app:showAsAction="never" />
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
     <item
         android:id="@+id/logout"
-        android:title="Đăng ký"
+        android:title="Đăng xuất"
         app:showAsAction="never" />
 </menu>
