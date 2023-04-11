@@ -98,9 +98,8 @@ public class AccountFragment extends Fragment {
                 new LoadImageInternet(getActivity(),ivImageUser)
                         .execute(String.valueOf(mUser.getPhotoUrl()));
                 tvUserName.setText(mUser.getDisplayName());
-            }else {
-                cvPreminum.setVisibility(View.VISIBLE);
             }
+            cvPreminum.setVisibility(View.VISIBLE);
         }
 
     }
