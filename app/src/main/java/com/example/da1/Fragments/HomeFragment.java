@@ -31,6 +31,7 @@ import com.example.da1.R;
 import com.example.da1.ZoomOutPageTransformer;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import me.relex.circleindicator.CircleIndicator3;
 
@@ -147,8 +148,19 @@ public class HomeFragment extends Fragment {
 
     }
 
+    public ArrayList<Song> getMixListSongs(ArrayList<Song> listSong){
+        ArrayList<Song> list = new ArrayList<>();
+        Random random = new Random();
+        while (listSong.size()>0){
+            int index = random.nextInt(listSong.size());
+            list.add(listSong.get(index));
+            listSong.remove(index);
+        }
+        return list;
+    }
+
     public void fillList(){
-        listSongRandoms = songsDAO.getAll();
+        listSongRandoms = getMixListSongs(songsDAO.getAll());
         songsAdapter = new SongsAdapter(getContext(),listSongRandoms);
         recyclerItem.setAdapter(songsAdapter);
         recyclerItem.setHasFixedSize(true);

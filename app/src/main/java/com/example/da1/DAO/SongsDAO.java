@@ -2,6 +2,7 @@ package com.example.da1.DAO;
 
 import static android.content.ContentValues.TAG;
 import static com.example.da1.Utilities.Constants.COLUMN_SONG_COUNT;
+import static com.example.da1.Utilities.Constants.COLUMN_SONG_ID;
 import static com.example.da1.Utilities.Constants.COLUMN_SONG_IMAGE;
 import static com.example.da1.Utilities.Constants.COLUMN_SONG_LINK;
 import static com.example.da1.Utilities.Constants.COLUMN_SONG_NAME;
@@ -116,6 +117,34 @@ public class SongsDAO implements ISongs{
     }
 
     @Override
+    public ArrayList<Song> getTop() {
+        db = mdb.getReadableDatabase();
+        ArrayList<Song> list = new ArrayList<>();
+        Cursor c = db.rawQuery("Select * from " + TABLE_SONGS +" ORDER BY "+
+                COLUMN_SONG_COUNT + " DESC ",null);
+        c.moveToFirst();
+        while (!c.isAfterLast()){
+            int _id = c.getInt(0);
+            String name = c.getString(1);
+            int image = c.getInt(2);
+            String link = c.getString(3);
+            String styleId = c.getString(4);
+            String singerId = c.getString(5);
+            int count = c.getInt(6);
+            boolean isStatus;
+            if (c.getInt(7)==1){
+                isStatus = true;
+            }else
+                isStatus = false;
+            Song newSong = new Song(_id,name,image,Integer.parseInt(link),styleId,singerId,count,isStatus);
+            list.add(newSong);
+            c.moveToNext();
+        }
+        c.close();
+        return list;
+    }
+
+    @Override
     public Song get(String id) {
         return null;
     }
@@ -139,7 +168,16 @@ public class SongsDAO implements ISongs{
 
     @Override
     public boolean update(Song song) {
-        return false;
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_SONG_COUNT,song.getCount());
+        values.put(COLUMN_SONG_STATUS,song.isStatus());
+
+        long check = db.update(TABLE_SONGS,values,COLUMN_SONG_ID+" = ? ",
+                new String[]{song.get_id()+""});
+        if(check == -1){
+            return false;
+        }else
+            return true;
     }
 
     @Override

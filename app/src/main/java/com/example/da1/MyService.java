@@ -29,6 +29,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.da1.Activities.PlayActivity;
 import com.example.da1.DAO.SingersDAO;
+import com.example.da1.DAO.SongsDAO;
 import com.example.da1.Models.Song;
 
 import java.text.SimpleDateFormat;
@@ -38,13 +39,25 @@ import java.util.Random;
 public class MyService extends Service {
 
     private MediaPlayer mediaPlayer;
-    private TimeSongViewModel timeSongViewModel;
+    private SongsDAO songsDAO;
     private ArrayList<Song> listSong = new ArrayList<>();
     private int position = 0;
     private boolean shuffle = false;
     private boolean repeat = false;
     private boolean next = false;
     private int temp=0;
+    private int count=0;
+    private Handler handler = new Handler();
+    private Runnable runCountForListens = new Runnable() {
+        @Override
+        public void run() {
+            count++;
+            handler.postDelayed(this,1000);
+            Log.d("mycount", count +"day ne");
+//            Toast.makeText(getApplicationContext(),"1",Toast.LENGTH_SHORT).show();
+            updateListens();
+        }
+    };
 
     public static boolean isPlaying = false;
     public static final int ACTION_PAUSE = 1;
@@ -59,6 +72,8 @@ public class MyService extends Service {
     public void onCreate() {
         super.onCreate();
 //        Toast.makeText(this,"serviceOnCreate",Toast.LENGTH_LONG).show();
+        songsDAO = new SongsDAO(this);
+
     }
 
     @Nullable
@@ -88,7 +103,28 @@ public class MyService extends Service {
             int time =  intent.getIntExtra("time_music_service",0);
             updateTimeFromSeekbar(time);
         }
+
         return START_NOT_STICKY;
+    }
+
+
+    private void updateListens(){
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (count==10){
+                    Song song = listSong.get(position);
+                    Song newSong = new Song(song.get_id(),song.getName(),song.getImage(), song.getLink()
+                            ,song.getStyleId(), song.getSingerId(), song.getCount()+1, song.isStatus());
+                    if (songsDAO.update(newSong)){
+                        Toast.makeText(getApplicationContext(),"tăng 1 lượt nghe",Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(getApplicationContext(),"cập nhật thất bại",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        },1000);
     }
 
     private void updateTimeFromSeekbar(int time) {
@@ -148,6 +184,11 @@ public class MyService extends Service {
     }
 
     private void prevMusic() {
+        //reset count for listens
+        count = 0;
+        handler.removeCallbacks(runCountForListens);
+        handler.postDelayed(runCountForListens,1000);
+
         if (listSong.size()>0){
             if (mediaPlayer.isPlaying() || mediaPlayer!=null){
                 mediaPlayer.stop();
@@ -179,6 +220,11 @@ public class MyService extends Service {
     }
 
     private void nextMusic() {
+        //reset count for listens
+        count = 0;
+        handler.removeCallbacks(runCountForListens);
+        handler.postDelayed(runCountForListens,1000);
+
         if (listSong.size()>0){
             if (mediaPlayer.isPlaying() || mediaPlayer!=null){
                 mediaPlayer.stop();
@@ -215,7 +261,10 @@ public class MyService extends Service {
             isPlaying = false;
             sendNotificationMedia(listSong,position);
             sendActionToPlayActivity(ACTION_PAUSE);
+            //dừng đếm count
+            handler.removeCallbacks(runCountForListens);
         }
+
     }
 
     private void resumeMusic(){
@@ -224,7 +273,11 @@ public class MyService extends Service {
             isPlaying = true;
             sendNotificationMedia(listSong,position);
             sendActionToPlayActivity(ACTION_RESUME);
+
+            //tiếp tục đếm count
+            handler.postDelayed(runCountForListens,1000);
         }
+
     }
 
     private void startMusic(){
@@ -238,7 +291,12 @@ public class MyService extends Service {
             isPlaying = true;
             sendNotificationMedia(listSong,position);
             sendActionToPlayActivity(ACTION_START);
+
+            //reset count
+            count=0;
+            handler.postDelayed(runCountForListens,1000);
         }
+
     }
 
 
@@ -374,7 +432,7 @@ public class MyService extends Service {
             public void run() {
                 if(mediaPlayer!=null){
                     sendTimeToPlayActivity(mediaPlayer.getCurrentPosition(),mediaPlayer.getDuration());
-                    handler.postDelayed(this,300);
+                    handler.postDelayed(this,800);
                     mediaPlayer.setOnCompletionListener(mp -> {
                         next = true;
                         try {
@@ -386,7 +444,7 @@ public class MyService extends Service {
                     });
                 }
             }
-        },300);
+        },800);
 
         Handler handler1 = new Handler();
         handler1.postDelayed(new Runnable() {
@@ -423,6 +481,7 @@ public class MyService extends Service {
         },1000);
 
     }
+
 
     private void sendActionToPlayActivity(int action){
         Intent intent = new Intent();

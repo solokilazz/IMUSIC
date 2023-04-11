@@ -36,6 +36,7 @@
         <RelativeLayout
             android:id="@+id/relativeLayout2"
             android:layout_toRightOf="@id/ivImageSong"
+            android:layout_centerVertical="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -49,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:text="Ten Bai Hat" />
+                android:text="TenBaiHat" />
             <TextView
                 android:id="@+id/tvTopListNameSinger"
                 android:layout_below="@id/tvTopListNameSong"
@@ -61,7 +62,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:text="Ten ca si" />
+                android:text="Tencasi" />
+            <TextView
+                android:id="@+id/tvTopListListens"
+                android:layout_below="@id/tvTopListNameSinger"
+                android:maxLines="1"
+                android:maxWidth="250dp"
+                android:ellipsize="end"
+                android:textSize="17sp"
+                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="Tencasi" />
 
         </RelativeLayout>
 

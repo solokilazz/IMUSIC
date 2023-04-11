@@ -9,6 +9,7 @@ public interface ISongs {
     ArrayList<Song> getBySingerId(String id);
     ArrayList<Song> getByStyleId(String id);
     ArrayList<Song> getAll();
+    ArrayList<Song> getTop();
     Song get(String id);
     boolean insert(Song song);
     boolean update(Song song);

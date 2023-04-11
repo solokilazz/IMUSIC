@@ -77,8 +77,8 @@ public class TopFragment extends Fragment {
     }
 
     public void fillList(){
-        if (songsDAO.getAll().size()>0){
-            topListAdapter = new TopListAdapter(getContext(), songsDAO.getAll());
+        if (songsDAO.getTop().size()>0){
+            topListAdapter = new TopListAdapter(getContext(), songsDAO.getTop());
             recyclerViewTopList.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerViewTopList.setAdapter(topListAdapter);
         }

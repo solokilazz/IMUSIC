@@ -58,6 +58,7 @@ public class TopListAdapter extends  RecyclerView.Adapter<TopListAdapter.SingerV
         holder.tvTopListIndex.setText(position+1+"");
         holder.tvTopListNameSinger.setText((new SingersDAO(context)).get(song.getSingerId()).getName());
         holder.tvTopListNameSong.setText(song.getName());
+        holder.tvTopListListens.setText("Lượt nghe: "+song.getCount());
         //truyen du lieu(danh sach va bai hat duoc chon)
         holder.layoutItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +87,7 @@ public class TopListAdapter extends  RecyclerView.Adapter<TopListAdapter.SingerV
     public class SingerViewHolder extends RecyclerView.ViewHolder{
 
         ImageView ivSong;
-        TextView tvTopListNameSong, tvTopListIndex, tvTopListNameSinger;
+        TextView tvTopListNameSong, tvTopListIndex, tvTopListNameSinger, tvTopListListens;
         RelativeLayout layoutItem;
 
         public SingerViewHolder(@NonNull View itemView) {
@@ -95,6 +96,7 @@ public class TopListAdapter extends  RecyclerView.Adapter<TopListAdapter.SingerV
             tvTopListIndex = itemView.findViewById(R.id.tvTopListIndex);
             tvTopListNameSong = itemView.findViewById(R.id.tvTopListNameSong);
             tvTopListNameSinger = itemView.findViewById(R.id.tvTopListNameSinger);
+            tvTopListListens = itemView.findViewById(R.id.tvTopListListens);
             layoutItem = itemView.findViewById(R.id.relativeLayoutToplist);
         }
     }
