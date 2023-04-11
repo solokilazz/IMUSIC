@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
 
-        if (mUser!=null){
+        if (mUser.getPhotoUrl()!=null){
             new LoadImageInternet(this,toolbar).execute(String.valueOf(mUser.getPhotoUrl()));
         }else {
             toolbar.setNavigationIcon(R.drawable.ic_outline_account_circle_24);

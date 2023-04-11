@@ -94,10 +94,13 @@ public class AccountFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
         if (mUser!=null){
-            new LoadImageInternet(getActivity(),ivImageUser)
-                    .execute(String.valueOf(mUser.getPhotoUrl()));
-            tvUserName.setText(mUser.getDisplayName());
-            cvPreminum.setVisibility(View.VISIBLE);
+            if(mUser.getPhotoUrl()!=null){
+                new LoadImageInternet(getActivity(),ivImageUser)
+                        .execute(String.valueOf(mUser.getPhotoUrl()));
+                tvUserName.setText(mUser.getDisplayName());
+            }else {
+                cvPreminum.setVisibility(View.VISIBLE);
+            }
         }
 
     }

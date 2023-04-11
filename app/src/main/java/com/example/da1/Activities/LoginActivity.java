@@ -8,10 +8,14 @@ import androidx.core.splashscreen.SplashScreen;
 
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.da1.MainActivity;
@@ -26,6 +30,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,7 +45,9 @@ public class LoginActivity extends AppCompatActivity {
     private SignInClient oneTapClient;
     private BeginSignInRequest signInRequest;
 
-    Button btnLoginGG, btnLogin;
+    private Button btnLoginGG, btnLogin,btnRegister;
+    private EditText etEmail, etPassWord;
+    private CheckBox chkRememberPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,13 +71,89 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    public void rememberUser(String e, String p, boolean stt){
+        SharedPreferences pref = getSharedPreferences("USER_FILE",MODE_PRIVATE);
+        SharedPreferences.Editor edit = pref.edit();
+        if (!stt){
+            //xoa tinh trang luu tru truoc do
+            edit.clear();
+        }else {
+            //luu du lieu
+            edit.putString("EMAIL",e);
+            edit.putString("PASSWORD",p);
+            edit.putBoolean("REMEMBER",stt);
+        }
+        //luu lai toan bo
+        edit.commit();
+    }
+
+
     private void eventClick() {
+
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email, pass;
+                email = etEmail.getText().toString();
+                pass = etPassWord.getText().toString();
+                if (TextUtils.isEmpty(email)){ //kiểm tra biến email có trống hay ko
+                    Toast.makeText(LoginActivity.this, "Vui lòng nhập email!!!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(pass)){
+                    Toast.makeText(LoginActivity.this, "Vui lòng nhập mật khẩu!!!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                mAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(LoginActivity.this, "Đăng ký thành công!!!", Toast.LENGTH_SHORT).show();
+                            etEmail.setText("");
+                            etPassWord.setText("");
+                        }else {
+                            Toast.makeText(LoginActivity.this, "Đăng ký thất bại!!!"
+                                    , Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this,
+                                    "PassWord phải nhiều hơn 6 ký tự, email phải đúng định dạng"
+                                    , Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+            }
+        });
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mainActivity = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(mainActivity);
-                finish();
+                String email, pass;
+                email = etEmail.getText().toString();
+                pass = etPassWord.getText().toString();
+                boolean stt = chkRememberPass.isChecked();
+                if (TextUtils.isEmpty(email)){ //kiểm tra biến email có trống hay ko
+                    Toast.makeText(LoginActivity.this, "Vui lòng nhập email!!!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(pass)){
+                    Toast.makeText(LoginActivity.this, "Vui lòng nhập mật khẩu!!!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                mAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(LoginActivity.this, "Đăng nhập thành công!!!", Toast.LENGTH_SHORT).show();
+                            rememberUser(email,pass,stt);
+                            Intent mainActivity = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(mainActivity);
+                            finish();
+                        }else {
+                            Toast.makeText(LoginActivity.this, "Đăng nhập thất bại!!!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
             }
         });
         btnLoginGG.setOnClickListener(new View.OnClickListener() {
@@ -84,13 +167,13 @@ public class LoginActivity extends AppCompatActivity {
                             startIntentSenderForResult(result.getPendingIntent().getIntentSender(),
                                     GG_SIGN_IN, null, 0, 0, 0);
                         } catch (IntentSender.SendIntentException e) {
-                            Log.e("ERROR", "Couldn't start One Tap UI: " + e.getLocalizedMessage());
+                            Log.e("signin", "Couldn't start One Tap UI: " + e.getLocalizedMessage());
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d("ERROR", e.getLocalizedMessage());
+                        Log.d("signin", e.getLocalizedMessage());
                         // No saved credentials found. Launch the One Tap sign-up flow, or
                         // do nothing and continue presenting the signed-out UI.
                     }
@@ -106,7 +189,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task< AuthResult > task) {
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d("ERROR", "signInWithCredential:success");
+                    Log.d("signin", "signInWithCredential:success");
                     FirebaseUser user = mAuth.getCurrentUser();
                     user.getDisplayName(); // tên hiển thị
                     user.getPhotoUrl(); //link ảnh đại diện
@@ -119,7 +202,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     // If sign in fails, display a message to the user.
                     Toast.makeText(LoginActivity.this, task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                    Log.w("ERROR", "signInWithCredential:failure", task.getException());
+                    Log.w("signin", "signInWithCredential:failure", task.getException());
                 }
             }
         });
@@ -147,6 +230,10 @@ public class LoginActivity extends AppCompatActivity {
     private void mapping() {
         btnLoginGG = findViewById(R.id.btnLoginGG);
         btnLogin = findViewById(R.id.btnLogin);
+        btnRegister = findViewById(R.id.btnRegister);
+        etEmail = findViewById(R.id.etEmail);
+        etPassWord = findViewById(R.id.etPassWord);
+        chkRememberPass = findViewById(R.id.chkRememberPass);
 
         mAuth = FirebaseAuth.getInstance();
         oneTapClient = Identity.getSignInClient(this);
@@ -169,6 +256,20 @@ public class LoginActivity extends AppCompatActivity {
             Intent mainActivity = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(mainActivity);
             finish();
+        }
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        SharedPreferences pref = getSharedPreferences("USER_FILE",MODE_PRIVATE);
+        String email = pref.getString("EMAIL","");
+        String password = pref.getString("PASSWORD","");
+        Boolean save = pref.getBoolean("REMEMBER",false);
+        if(save == true){
+            etEmail.setText(email);
+            etPassWord.setText(password);
+            chkRememberPass.setChecked(save);
         }
     }
 }
